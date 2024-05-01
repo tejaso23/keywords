@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Keywords and Summary</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+        h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        h3 {
+            color: #666;
+        }
+        p {
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Extracted Keywords</h2>
+        <ul>
+            {% for keyword, score in keywords %}
+                <li>{{ keyword }} (Score: {{ score }})</li>
+            {% endfor %}
+        </ul>
+        <h2>Summary</h2>
+        <p id="summary">{{ summary }}</p>
+        <button onclick="speak('summary')">Speak</button>
+        <button onclick="stop()">Stop</button>
+
+        <h3>Summarization Method 1:</h3>
+        <p id="summary1">{{ summary1 }}</p>
+        <button onclick="speak('summary1')">Speak</button>
+        <button onclick="stop()">Stop</button>
+
+        <h3>Summarization Method 2:</h3>
+        <p id="summary2">{{ summary2 }}</p>
+        <button onclick="speak('summary2')">Speak</button>
+        <button onclick="stop()">Stop</button>
+
+         <h3>Sentiment Analysis:</h3>
+        <p>{{ sentiment }}</p>  <!-- Display sentiment analysis result -->
+
+        {% if sentiment == 'Language not supported' %}
+            <p>Please upload a text in a supported language (e.g., English).</p>
+        {% endif %}
+    </div>
+</body>
+<script>
+var synth = window.speechSynthesis;
+var utterance = new SpeechSynthesisUtterance();
+
+function speak(summaryId) {
+  var summaryText = document.getElementById(summaryId).textContent;
+  if (synth.speaking) {
+    synth.cancel();
+  }
+  utterance.lang = 'en-US';
+  utterance.text = summaryText;
+  synth.speak(utterance);
+}
+
+function stop() {
+  if (synth.speaking) {
+    synth.cancel();
+  }
+}
+</script>
+</html>
